@@ -99,7 +99,19 @@ const RootMutationType = new GraphQLObjectType({
                 books.push(book)
                 return book
             }
-        }
+        },
+        removeBook: {
+            type: BookType,
+            description: 'Remove a book.',
+            args: {
+                id: { type: GraphQLNonNull(GraphQLInt) },
+            },
+            resolve: (parent, args) => {
+                const book = books.find(book => book.id === args.id)
+                books = books.filter(book => book.id !== args.id)
+                return book
+            }
+        },
     })
 })
 
@@ -124,13 +136,13 @@ app.get('/', (req, res) => {
 })
 
 
-const authors = [
+var authors = [
 	{ id: 1, name: 'J. K. Rowling' },
 	{ id: 2, name: 'J. R. R. Tolkien' },
 	{ id: 3, name: 'Brent Weeks' }
 ]
 
-const books = [
+var books = [
 	{ id: 1, name: 'Harry Potter and the Chamber of Secrets', authorId: 1 },
 	{ id: 2, name: 'Harry Potter and the Prisoner of Azkaban', authorId: 1 },
 	{ id: 3, name: 'Harry Potter and the Goblet of Fire', authorId: 1 },
